@@ -63,11 +63,7 @@ class Firebase {
 	async getAssessments() {
 		try{
 		const assessments = await this.db.collection('Assessments').get();
-		const results = [];
-		assessments.forEach(async element => {
-			results.push(element.data());		
-		});
-		return results;
+		return assessments.docs.map(doc=>doc.data());
 		}
 		catch{
 			return null;
@@ -76,12 +72,24 @@ class Firebase {
 
 	async getSectionByID(id) {
 		try{
-			console.log(id);
 			const sections = await this.db.collection('Sections').where('id','==',id).get();
-			sections.forEach(section=> console.log(section.data()))
+			const section = sections.docs.map(doc=>doc.data())[0];
+			const questionIDs = section.questions;
+			return Promise.all(questionIDs.map( async (id) => {
+				const res = await this.db.collection('Questions').where('id','==', id.questionID).get();
+				return res.docs.map(doc => doc.data());
+			}))
+			.then(data=> {
+				return data;
+			})
+			.catch(error =>
+				{
+					console.log(error);
+					return null;
+				});
 		}
 		catch{
-			console.log('err');
+			return null;
 		}
 	}
 }

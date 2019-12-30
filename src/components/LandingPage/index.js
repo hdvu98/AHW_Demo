@@ -118,8 +118,16 @@ function Dashboard(props) {
 
 	useEffect(() => {
 		async function fetchData(){
-		const assessments = await firebase.getSectionByID('S00001');
-		console.log('all assessments: ',assessments);
+		const assessment = await firebase.getAssessments();
+		console.log(JSON.stringify(assessment))
+		}
+		fetchData();
+	},[])
+
+	useEffect(() => {
+		async function fetchData(){
+		const section = await firebase.getSectionByID('S00001');
+		console.log(JSON.stringify(section))
 		}
 		fetchData();
 	},[])
