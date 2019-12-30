@@ -77,7 +77,7 @@ class Firebase {
 			const questionIDs = section.questions;
 			return Promise.all(questionIDs.map( async (id) => {
 				const res = await this.db.collection('Questions').where('id','==', id.questionID).get();
-				return res.docs.map(doc => doc.data());
+				return res.docs.map(doc =>doc.data())[0];
 			}))
 			.then(data=> {
 				return data;
