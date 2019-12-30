@@ -116,9 +116,13 @@ function Dashboard(props) {
 
 	// const [quote, setQuote] = useState('')
 
-	// useEffect(() => {
-	// 	firebase.getCurrentUserQuote().then(setQuote)
-	// })
+	useEffect(() => {
+		async function fetchData(){
+		const assessments = await firebase.getSectionByID('S00001');
+		console.log('all assessments: ',assessments);
+		}
+		fetchData();
+	},[])
 
 	return (
 		<React.Fragment>

@@ -59,6 +59,31 @@ class Firebase {
 		const quote = await this.db.doc(`users_codedamn_video/${this.auth.currentUser.uid}`).get()
 		return quote.get('quote')
 	}
+
+	async getAssessments() {
+		try{
+		const assessments = await this.db.collection('Assessments').get();
+		const results = [];
+		assessments.forEach(async element => {
+			results.push(element.data());		
+		});
+		return results;
+		}
+		catch{
+			return null;
+		}
+	}
+
+	async getSectionByID(id) {
+		try{
+			console.log(id);
+			const sections = await this.db.collection('Sections').where('id','==',id).get();
+			sections.forEach(section=> console.log(section.data()))
+		}
+		catch{
+			console.log('err');
+		}
+	}
 }
 
 export default new Firebase()
