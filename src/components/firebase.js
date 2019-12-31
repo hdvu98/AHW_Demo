@@ -62,7 +62,7 @@ class Firebase {
 
 	async getAssessments() {
 		try{
-		const assessments = await this.db.collection('Assessments').get();
+		const assessments = await this.db.collection('Assessments').orderBy("id", "asc").get()
 		return assessments.docs.map(doc=>doc.data());
 		}
 		catch{
@@ -91,6 +91,17 @@ class Firebase {
 		catch{
 			return null;
 		}
+	}
+
+	addAssessment(assessment) {
+		this.db.collection("Assessments").add(assessment)
+		.then(function() {
+			console.log("Document successfully written!");
+		})
+		.catch(function(error) {
+			console.error("Error writing document: ", error);
+		});
+		
 	}
 }
 
