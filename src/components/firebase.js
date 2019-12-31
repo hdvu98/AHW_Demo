@@ -52,7 +52,7 @@ class Firebase {
 	}
 
 	getCurrentUsername() {
-		return this.auth.currentUser && this.auth.currentUser.displayName
+		return this.auth.currentUser && this.auth.currentUser.email
 	}
 
 	async getCurrentUserQuote() {
@@ -60,10 +60,26 @@ class Firebase {
 		return quote.get('quote')
 	}
 
-	async getAssessments() {
+	async getAssessments(username) {
 		try{
 		const assessments = await this.db.collection('Assessments').orderBy("id", "asc").get()
-		return assessments.docs.map(doc=>doc.data());
+		const result = assessments.docs.map(doc=>doc.data());
+		const status = await Promise.all(result.map(async (item )=>{
+			const res = await this.db.collection('AssessmentResults')
+					.where('username','==',username)
+					.where('assessmentID','==',item.id)
+					.get();
+			return res.docs.map(doc =>doc.data())[0];
+			}))
+			.then(data=> data)
+			.catch( (err) => {
+				console.log(err); 
+				return null
+			});
+		for ( var i = 0 ; i < result.length ; i ++ ){
+			result[i].status = status[i]? status[i].status : null;
+		}
+		return result;
 		}
 		catch{
 			return null;
@@ -101,7 +117,14 @@ class Firebase {
 		.catch(function(error) {
 			console.error("Error writing document: ", error);
 		});
-		
+	}
+
+	async getAssessmentStatus(username, id) {
+		const status = await this.db.collection("AssessmentResults")
+									.where('username','==',username)
+									.where('assessmentID','==',id)
+									.get();
+		console.log(status.docs.map(item=>item.data()));
 	}
 }
 

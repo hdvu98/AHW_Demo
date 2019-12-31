@@ -118,19 +118,93 @@ function Dashboard(props) {
 
 	useEffect(() => {
 		async function fetchData(){
-		const assessment = await firebase.getAssessments();
+		const email = firebase.auth.currentUser.email;
+		const assessment = await firebase.getAssessments(email);
 		console.log(JSON.stringify(assessment))
 		}
 		fetchData();
 	},[])
 
-	useEffect(() => {
-		async function fetchData(){
-		const section = await firebase.getSectionByID('S00001');
-		console.log(JSON.stringify(section))
-		}
-		fetchData();
-	},[])
+	// useEffect(() => {
+	// 	async function fetchData(){
+	// 	const section = await firebase.getAssessmentStatus('duong@gmail.com','SA00001');
+		
+	// 	}
+	// 	fetchData();
+	// },[])
+
+	// useEffect(()=>{
+	// 	const assessments = [
+	// 		{
+	// 			name: 'Responsibilities',
+	// 			id: 'AS00001',
+	// 			description:'',
+	// 			section: []
+	// 			},
+	// 		{
+	// 			name: 'Feed and water',
+	// 			id: 'AS00002',
+	// 			description:'',
+	// 			section: []
+	// 			},
+	// 		{
+	// 			name: 'Risk management',
+	// 			id: 'AS00003',
+	// 			description:`of extreme weather,
+	// 			natural disasters, disease, injury and predation`,
+	// 			section: []
+	// 			},
+	// 		{
+	// 			name: 'Facilities and equipment',
+	// 			id: 'AS00004',
+	// 			description:'',
+	// 			section: []
+	// 			},
+	// 		{
+	// 			name: 'Handling and management',
+	// 			id: 'AS00005',
+	// 			description:'',
+	// 			section: []
+	// 			},
+	// 		{
+	// 			name: 'Castration, dehorning and spaying',
+	// 			id: 'AS00006',
+	// 			description:'',
+	// 			section: []
+	// 			},
+	// 		{
+	// 			name: 'Breeding management',
+	// 			id: 'AS00007',
+	// 			description:'',
+	// 			section: []
+	// 			},
+	// 		{
+	// 			name: 'Calf-rearing systems',
+	// 			id: 'AS00008',
+	// 			description:'',
+	// 			section: []
+	// 			},
+	// 		{
+	// 			name: 'Dairy management',
+	// 			id: 'AS00009',
+	// 			description:'',
+	// 			section: []
+	// 			},
+	// 		{
+	// 			name: 'Beef feedlots',
+	// 			id: 'AS00010',
+	// 			description:'',
+	// 			section: []
+	// 			},
+	// 		{
+	// 			name: 'Humane killing',
+	// 			id: 'AS00011',
+	// 			description:'',
+	// 			section: []
+	// 			},
+	// 	]
+	// 	Promise.all(assessments.map(async item=> firebase.addAssessment(item)));
+	// }, [])
 
 	return (
 		<React.Fragment>
